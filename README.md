@@ -1,2 +1,7 @@
-# cli
-CLI - Node.js
+# CLI - Node.js
+
+Command line interface
+
+**_Use:_**
+
+- nodemon
