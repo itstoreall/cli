@@ -1,8 +1,20 @@
 import fs from 'fs';
 import contactFn from './contacts.js';
 
-console.log('index-listContacts', contactFn.listContacts());
-console.log('index-getContactById', contactFn.getContactById());
+console.log(
+  contactFn.listContacts().then((data) =>
+    console.log(
+      'ind-fn1:',
+      data.map((d) => d.id)
+    )
+  )
+);
+
+console.log(
+  contactFn.getContactById(7).then((data) => console.log('ind-fn2:', data.id))
+);
+
+// contactFn.listContacts();
 // import path from 'path';
 // const contactsPath = path.join('/db', '/contacts.json');
 // console.log('contactsPath', contactsPath);

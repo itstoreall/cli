@@ -1,17 +1,23 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
-// const contactsPath = path.join('/db', '/contacts.json');
 const contactsPath = path.join('./db/contacts.json');
 
-// TODO: задокументировать каждую функцию
-function listContacts() {
-  fs.readFile(contactsPath, 'utf-8', (err, data) => {
-    console.log('data:', JSON.parse(data)[0]);
-  });
+async function listContacts() {
+  try {
+    const contacts = await fs.readFile(contactsPath, 'utf-8');
+    return await JSON.parse(contacts);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function getContactById(contactId) {
-  console.log('contactId', contactId);
+async function getContactById(contactId) {
+  const contacts = await listContacts();
+  const contact = contacts.find((contact) => {
+    return contact.id === contactId;
+  });
+
+  return contact;
 }
 
 function removeContact(contactId) {
