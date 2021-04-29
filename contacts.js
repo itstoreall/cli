@@ -15,10 +15,10 @@ async function listContacts() {
 async function getContactById(contactId) {
   try {
     const contacts = await listContacts();
-    const contact = contacts.find((contact) => {
-      return contact.id === contactId;
+    const contact = await contacts.find((contact) => {
+      return contact.id === Number(contactId);
     });
-    return contact;
+    return await contact;
   } catch (error) {
     console.log(error.message);
     return;
@@ -28,30 +28,27 @@ async function getContactById(contactId) {
 async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts();
-    const newContact = JSON.stringify(
+    const newContacts = JSON.stringify(
       [...contacts, { id: Date.now(), name: name, email: email, phone: phone }],
       null,
       2
     );
-    await fs.writeFile(contactsPath, newContact);
-    return contacts;
-    // console.log('44', contacts);
+    await fs.writeFile(contactsPath, newContacts);
+    return newContacts;
   } catch (error) {
     console.log(error.message);
     return;
   }
 }
 
-// addContact('Vasya', 'f@mail.net', '0678856849');
-// addContact();
-
 async function removeContact(contactId) {
   try {
     const contacts = await listContacts();
-    const removedContacts = contacts.filter((contact) => {
-      return contact.id !== contactId;
+    const newContacts = contacts.filter((contact) => {
+      return contact.id !== Number(contactId);
     });
-    return fs.writeFile(contactsPath, JSON.stringify(removedContacts, null, 2));
+    await fs.writeFile(contactsPath, JSON.stringify(newContacts, null, 2));
+    return newContacts;
   } catch (error) {
     console.log(error.message);
     return;
@@ -60,13 +57,3 @@ async function removeContact(contactId) {
 
 const contactFn = { listContacts, getContactById, removeContact, addContact };
 export default contactFn;
-
-/* Example #1
-export const info = (msg) => {
-  console.log(`Info: ${msg}`);
-};
-
-export const log = (msg) => {
-  console.log(`Log: ${msg}`);
-};
-*/
